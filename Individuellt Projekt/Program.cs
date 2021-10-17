@@ -10,15 +10,17 @@ namespace Individuellt_Projekt
             
             
             
-
+            // Deklarerar nya användare med namn och pin kod genom User classen.
             User user1 = new User("albin", "1777");
             User user2 = new User("göran", "1888");
             User user3 = new User("kevin", "1555");
             User user4 = new User("sixten", "1666");
             User user5 = new User("perra", "1999");
 
+            //Stoppar in dem olika användarna i en array
             User[] bankUsers = { user1, user2, user3, user4, user5 };
 
+            //Använder bankkonto classen för att ge värden till dem olika användarna. 
             user1.Konton = new Bankkonto[] { new Bankkonto(1300, "sparkonto")};
             user2.Konton = new Bankkonto[] { new Bankkonto(1400, "sparkonto"), new Bankkonto(2400, " lönekonto")};
             user3.Konton = new Bankkonto[] { new Bankkonto(1500, "sparkonto"), new Bankkonto(2500, " lönekonto"), new Bankkonto(3200, " slöskonto")};
@@ -29,7 +31,7 @@ namespace Individuellt_Projekt
             
             string userInput = "";
 
-            
+            // While loop för att köra om menyn sålänge inte användaren väljer att logga ut. 
             while (userInput != "4")
             {
 
@@ -43,12 +45,11 @@ namespace Individuellt_Projekt
 
                 userInput = Console.ReadLine();
 
-                
+                //Switch sats för dem olika menyvalen med metoderna instoppade i varje case. 
                 switch (userInput)
                 {
                     case "1":
                         Accounts(user);
-                        Console.ReadLine();
                         break;
 
                     case "2":
@@ -75,7 +76,8 @@ namespace Individuellt_Projekt
 
 
 
-
+        // Welcome metod med som kollar så att inlogg stämmer och också bestämmer vilken användare det är som loggar in med hjälp av loop. 
+        // Metoden har också ett antal max försök innan applikationen stängs ner. J == numret på usern som loggar in. 
         public static User Welcome(User[] bankUsers)
         {
             Console.WriteLine("Welcome to the bank of Sweden! Press enter to get to the loginpage");
@@ -116,19 +118,21 @@ namespace Individuellt_Projekt
             
         }
 
+        //Denna metod använder infon vi fick från Welcome metod att ta reda på vilken user det är och skriver sedan ut userns kontonamn och saldo.
         static void Accounts(User userx)
         {
-            Console.WriteLine("Tryck Enter för att komma tillbaka till menyn");
-            Console.ReadLine();
-
-            Console.WriteLine(userx);
 
             foreach (var bankkonto in userx.Konton)
             {
                 Console.WriteLine(bankkonto.Kontonamn +" "+ bankkonto.Balance);
             }
+            Console.WriteLine("");
+            Console.WriteLine("Tryck enter för att komma tillbaka till menyn");
+            Console.ReadLine();
         }
-
+        
+        // Denna metoden radar upp alla konton den specifika användaren har och ger varje kontonamn ett nummer.
+        // Den tar sedan in info från användaren för att bestämma vilka konton som den tar pengar ifrån och vilket som det lägger till. 
         static void Transfer(User usery)
         {
             
@@ -139,10 +143,13 @@ namespace Individuellt_Projekt
                 Console.WriteLine(i + bankkonto.Kontonamn + " " + bankkonto.Balance);
 
             }
+            Console.WriteLine("");
             Console.WriteLine("Välj ett konto att överföra pengar ifrån");
             int userResponse = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("");
             Console.WriteLine("Välj ett konto att överföra pengar till");
             int userResponse2 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("");
             Console.WriteLine("Välj antal kronor du ska överföra");
             double antalKronor = Convert.ToDouble(Console.ReadLine());
 
@@ -153,12 +160,16 @@ namespace Individuellt_Projekt
             bankkontoTill.Balance = bankkontoTill.Balance + antalKronor;
             Console.WriteLine(bankkontoFrån.Kontonamn + bankkontoFrån.Balance);
             Console.WriteLine(bankkontoTill.Kontonamn + bankkontoTill.Balance);
+            Console.WriteLine("");
+            Console.WriteLine("Klicka enter för att komma tillbaka till menyn");
+            Console.ReadLine();
 
 
 
 
         }
-
+        // Ännu en gång så radar vi först upp dem olika kontona med en siffra intill. Sen väljer användaren ett konto utifrån siffra som hen ska - 
+        // ta ut pengar ifrån. 
         static void Withdrawal(User userx)
         {
 
@@ -168,19 +179,25 @@ namespace Individuellt_Projekt
 
                 Console.WriteLine(i + bankkonto.Kontonamn + " " + bankkonto.Balance);
             }
-            
+
+            Console.WriteLine("");
             Console.WriteLine("Välj ett konto att ta ut pengar ifrån");
             int userResponse3 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("");
             Console.WriteLine("Välj antal kronor att ta ut");
             double kronorUttag = Convert.ToInt32(Console.ReadLine());
 
             Bankkonto bankkontoFrån = (Bankkonto)userx.Konton.GetValue(userResponse3);
 
             bankkontoFrån.Balance = bankkontoFrån.Balance - kronorUttag;
+            Console.WriteLine("");
             Console.WriteLine(bankkontoFrån.Kontonamn + bankkontoFrån.Balance);
+            Console.WriteLine("");
+            Console.WriteLine("Klicka enter för att komma tillbaka till menyn");
+            Console.ReadLine();
 
         }
-    }
+    } //Skapar en class kallad User så jag har en mall för vad alla användare ska ha för info.
     class User
     {
         public string Username { get; set; }
@@ -192,7 +209,7 @@ namespace Individuellt_Projekt
             Password = pin;
         }
     }
-
+    // Skapar en class kallad Bankkonto för att ha en mall med saldo och kontonamn på. 
     class Bankkonto
     {
         public double Balance { get; set;  }
