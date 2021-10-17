@@ -25,7 +25,7 @@ namespace Individuellt_Projekt
             user4.Konton = new Bankkonto[] { new Bankkonto(1600, "sparkonto"), new Bankkonto(2600, " lönekonto"), new Bankkonto(3300, " slöskonto"), new Bankkonto(4200, " akutkonto")};
             user5.Konton = new Bankkonto[] { new Bankkonto(1700, "sparkonto"), new Bankkonto(2700, " lönekonto"), new Bankkonto(3400, " slöskonto"), new Bankkonto(4300, " akutkonto"), new Bankkonto(5200, " aktiekonto") };
             
-            Welcome(bankUsers);
+            User user = Welcome(bankUsers);
             
             string userInput = "";
 
@@ -47,16 +47,16 @@ namespace Individuellt_Projekt
                 switch (userInput)
                 {
                     case "1":
-                        Accounts();
+                        Accounts(user);
                         Console.ReadLine();
                         break;
 
                     case "2":
-                        Transfer();
+                        Transfer(user);
                         break;
 
                     case "3":
-                        Withdrawal();
+                        Withdrawal(user);
                         break;
 
                     case "4":
@@ -80,6 +80,7 @@ namespace Individuellt_Projekt
         {
             Console.WriteLine("Welcome to the bank of Sweden! Press enter to get to the loginpage");
             Console.ReadLine();
+            
            
             
 
@@ -115,19 +116,69 @@ namespace Individuellt_Projekt
             
         }
 
-        static void Accounts()
+        static void Accounts(User userx)
         {
-            Console.WriteLine("Method för att kolla konton och saldo");
+            Console.WriteLine("Tryck Enter för att komma tillbaka till menyn");
+            Console.ReadLine();
+
+            Console.WriteLine(userx);
+
+            foreach (var bankkonto in userx.Konton)
+            {
+                Console.WriteLine(bankkonto.Kontonamn +" "+ bankkonto.Balance);
+            }
         }
 
-        static void Transfer()
+        static void Transfer(User usery)
         {
-            Console.WriteLine("Method för att låta användaren överföra pengar mellan konton");
+            
+            for (int i = 0; i < usery.Konton.Length; i++)
+            {
+                Bankkonto bankkonto =(Bankkonto) usery.Konton.GetValue(i);
+                
+                Console.WriteLine(i + bankkonto.Kontonamn + " " + bankkonto.Balance);
+
+            }
+            Console.WriteLine("Välj ett konto att överföra pengar ifrån");
+            int userResponse = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Välj ett konto att överföra pengar till");
+            int userResponse2 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Välj antal kronor du ska överföra");
+            double antalKronor = Convert.ToDouble(Console.ReadLine());
+
+            Bankkonto bankkontoFrån = (Bankkonto) usery.Konton.GetValue(userResponse);
+            Bankkonto bankkontoTill = (Bankkonto) usery.Konton.GetValue(userResponse2);
+
+            bankkontoFrån.Balance = bankkontoFrån.Balance - antalKronor;
+            bankkontoTill.Balance = bankkontoTill.Balance + antalKronor;
+            Console.WriteLine(bankkontoFrån.Kontonamn + bankkontoFrån.Balance);
+            Console.WriteLine(bankkontoTill.Kontonamn + bankkontoTill.Balance);
+
+
+
+
         }
 
-        static void Withdrawal()
+        static void Withdrawal(User userx)
         {
-            Console.WriteLine("Metod för att ta ut pengar ur specifikt konto");
+
+            for (int i = 0; i < userx.Konton.Length; i++)
+            {
+                Bankkonto bankkonto = (Bankkonto)userx.Konton.GetValue(i);
+
+                Console.WriteLine(i + bankkonto.Kontonamn + " " + bankkonto.Balance);
+            }
+            
+            Console.WriteLine("Välj ett konto att ta ut pengar ifrån");
+            int userResponse3 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Välj antal kronor att ta ut");
+            double kronorUttag = Convert.ToInt32(Console.ReadLine());
+
+            Bankkonto bankkontoFrån = (Bankkonto)userx.Konton.GetValue(userResponse3);
+
+            bankkontoFrån.Balance = bankkontoFrån.Balance - kronorUttag;
+            Console.WriteLine(bankkontoFrån.Kontonamn + bankkontoFrån.Balance);
+
         }
     }
     class User
